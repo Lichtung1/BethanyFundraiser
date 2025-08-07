@@ -17,10 +17,21 @@
     </header>
 
     <main>
+        <section id="progress-container">
+            <h3>Overall Progress</h3>
+            <div class="progress-bar">
+                <div id="progress-bar-fill"></div>
+            </div>
+        </section>
+
         <section id="summary">
             <div class="summary-box">
-                <h2>Total Raised</h2>
+                <h2>A-Thon Funding Total</h2>
                 <h3 id="total-raised">$0.00</h3>
+            </div>
+            <div class="summary-box">
+                <h2>Other Funding Sources</h2>
+                <h3 id="other-funds-total">$0.00</h3>
             </div>
             <div class="summary-box">
                 <h2>Fundraising Goal</h2>
@@ -49,8 +60,48 @@
 
                 <label for="participant-email">Email Address:</label>
                 <input type="email" id="participant-email" name="email" required>
+                
+                <label for="movement-type">Type of Movement:</label>
+                <select id="movement-type" name="movement" required>
+                    <option value="Running">Running</option>
+                    <option value="Walking">Walking</option>
+                    <option value="Biking">Biking</option>
+                    <option value="Swimming">Swimming</option>
+                </select>
+
+                <label for="est-distance">Estimated Max Distance (km):</label>
+                <input type="number" id="est-distance" name="est-distance" min="1" required>
 
                 <button type="submit" class="action-button">Join Now</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <span id="success-close-btn" class="close-btn">&times;</span>
+            <h2>Welcome Aboard!</h2>
+            <p>Please save your unique <strong>Tracker Code</strong> below.</p>
+            <p>You'll need it to update your distance later!</p>
+            <p>To add a profile photo, please email it to <strong>your.email@example.com</strong>.</p>
+            <p>Your Tracker Code:</p>
+            <h3 id="tracker-code-display"></h3>
+        </div>
+    </div>
+
+    <div id="update-distance-modal" class="modal">
+        <div class="modal-content">
+            <span id="update-distance-close-btn" class="close-btn">&times;</span>
+            <h2>Update Your Distance</h2>
+            <form id="update-distance-form">
+                <input type="hidden" id="update-participant-id">
+                <label for="tracker-code-input">Your Tracker Code:</label>
+                <input type="text" id="tracker-code-input" required>
+
+                <label for="new-distance">New Total Distance (km):</label>
+                <input type="number" id="new-distance" min="0" step="any" required>
+
+                <button type="submit" class="action-button">Update Distance</button>
             </form>
         </div>
     </div>
@@ -58,13 +109,10 @@
     <div id="sponsor-modal" class="modal">
         <div class="modal-content">
             <span id="sponsor-close-btn" class="close-btn">&times;</span>
-            <h2 id="sponsoring-participant-name">Sponsor a Participant</h2>
+            <h3 id="sponsoring-participant-name">Sponsor a Participant</h3>
             <input type="hidden" id="sponsoring-participant-id">
             <p>Your support makes a difference! Thank you!</p>
             <form id="sponsor-form">
-                <h3 id="sponsoring-participant-name"></h3>
-                <input type="hidden" id="sponsoring-participant-id">
-                
                 <label for="sponsor-name">Your Name:</label>
                 <input type="text" id="sponsor-name" name="name" required>
 
@@ -73,6 +121,14 @@
 
                 <label for="pledge-amount">Pledge per km ($):</label>
                 <input type="number" id="pledge-amount" name="pledge" min="0.01" step="0.01" required>
+
+                <label for="max-donation">Max Donation ($) (Optional):</label>
+                <input type="number" id="max-donation" name="max-donation" min="1">
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="is-anonymous" name="is-anonymous">
+                    <label for="is-anonymous">I'd like my pledge to be anonymous on the site.</label>
+                </div>
 
                 <button type="submit" class="action-button">Submit Pledge</button>
             </form>
