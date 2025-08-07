@@ -22,7 +22,7 @@ const participantCardsContainer = document.getElementById('participant-cards');
 // --- Main Render Function ---
 function renderParticipants(data) {
     participantCardsContainer.innerHTML = '';
-    let athonTotal = 0; // Renamed for clarity
+    let athonTotal = 0;
 
     if (data.participants) {
         Object.entries(data.participants).forEach(([id, participant]) => {
@@ -49,13 +49,13 @@ function renderParticipants(data) {
                 <p><strong>Activity:</strong> ${participant.movementType || 'N/A'}</p>
                 <p><strong>Current Distance:</strong> ${participant.distance} ${participant.unit}</p>
                 <p><strong>Goal:</strong> ${participant.estimatedDistance} ${participant.unit}</p>
-                <p><strong>Raised:</strong> $${totalRaisedByParticipant.toFixed(2)}</p>
+                <p><strong>Raised:</strong> $${totalRaisedByParticipant.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
                 <div class="sponsor-list">
                     <strong>Sponsors:</strong>
-                    ${participant.sponsors ? 
-                        Object.values(participant.sponsors).map(sponsor => 
-                            `<span>${sponsor.isAnonymous ? 'Anonymous' : sponsor.name}</span>`
-                        ).join('') : 
+                    ${participant.sponsors ?
+                        Object.values(participant.sponsors).map(spon =>
+                            `<span>${spon.isAnonymous ? 'Anonymous' : spon.name}</span>`
+                        ).join('') :
                         '<span>None yet!</span>'
                     }
                 </div>
@@ -63,37 +63,30 @@ function renderParticipants(data) {
                     <button class="card-button update-button" data-participant-id="${id}">Update Distance</button>
                     <button class="card-button" data-participant-id="${id}" data-participant-name="${participant.name}">Sponsor Me</button>
                 </div>
+                <p class="tracker-code-info">Use your Tracker Code to update distance.</p>
             `;
             participantCardsContainer.appendChild(card);
         });
     }
 
-    // --- NEW CALCULATION LOGIC ---
-
-    // 1. Get the manually entered 'otherFunds' from your database
     const otherFunds = data.eventInfo.otherFunds || 0;
+    const overallTotal = athonTotal + otherFunds; // Simplified total
+    const fundraisingGoal = data.eventInfo.totalGoal || 0;
 
-    // 2. Calculate the new overall total
-    const overallTotal = athonTotal + otherFunds;
-
-    // 3. Update all the cards in the summary section
-    document.getElementById('total-raised').textContent = `$${athonTotal.toFixed(2)}`;
-    document.getElementById('other-funds-total').textContent = `$${otherFunds.toFixed(2)}`;
+    // Apply formatting to the summary values that exist in your HTML
+    document.getElementById('total-raised').textContent = `$${athonTotal.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    document.getElementById('other-funds-total').textContent = `$${otherFunds.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     document.querySelector('header h1').textContent = data.eventInfo.eventName;
-    document.getElementById('total-goal').textContent = `$${data.eventInfo.totalGoal.toFixed(2)}`;
+    document.getElementById('total-goal').textContent = `$${fundraisingGoal.toLocaleString('en-CA', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
     // --- Progress Bar Calculation ---
-    const fundraisingGoal = data.eventInfo.totalGoal;
-    // 4. Update the progress bar to use the new overall total
-    const progressPercentage = (overallTotal / fundraisingGoal) * 100;
-
+    const progressPercentage = fundraisingGoal > 0 ? (overallTotal / fundraisingGoal) * 100 : 0;
     const progressBarFill = document.getElementById('progress-bar-fill');
     const finalPercentage = Math.min(progressPercentage, 100);
 
     progressBarFill.style.width = `${finalPercentage}%`;
     progressBarFill.textContent = `${finalPercentage.toFixed(1)}%`;
 }
-
 // Listen for real-time changes to the database
 onValue(dbRef, (snapshot) => {
     const data = snapshot.val();
