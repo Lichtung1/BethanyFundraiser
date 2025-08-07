@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bethany's Fundraiser</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <header>
+        <h1></h1>
+        <p>A fun event to raise money for a great cause!</p>
+    </header>
+
+    <main>
+        <section id="summary">
+            <div class="summary-box">
+                <h2>Total Raised</h2>
+                <h3 id="total-raised">$0.00</h3>
+            </div>
+            <div class="summary-box">
+                <h2>Fundraising Goal</h2>
+                <h3 id="total-goal">$0.00</h3>
+            </div>
+        </section>
+
+        <section id="participants-list">
+            <div class="participants-header">
+                <h2>Participants</h2>
+                <button id="add-participant-btn" class="action-button">Become a Participant</button>
+            </div>
+            <div id="participant-cards">
+                </div>
+        </section>
+    </main>
+
+    <div id="participant-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2>Become a Participant</h2>
+            <p>Enter your details below to join the fundraiser!</p>
+            <form id="participant-form">
+                <label for="participant-name">Full Name:</label>
+                <input type="text" id="participant-name" name="name" required>
+
+                <label for="participant-email">Email Address:</label>
+                <input type="email" id="participant-email" name="email" required>
+
+                <button type="submit" class="action-button">Join Now</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="sponsor-modal" class="modal">
+        <div class="modal-content">
+            <span id="sponsor-close-btn" class="close-btn">&times;</span>
+            <h2 id="sponsoring-participant-name">Sponsor a Participant</h2>
+            <input type="hidden" id="sponsoring-participant-id">
+            <p>Your support makes a difference! Thank you!</p>
+            <form id="sponsor-form">
+                <h3 id="sponsoring-participant-name"></h3>
+                <input type="hidden" id="sponsoring-participant-id">
+                
+                <label for="sponsor-name">Your Name:</label>
+                <input type="text" id="sponsor-name" name="name" required>
+
+                <label for="sponsor-email">Your Email:</label>
+                <input type="email" id="sponsor-email" name="email" required>
+
+                <label for="pledge-amount">Pledge per km ($):</label>
+                <input type="number" id="pledge-amount" name="pledge" min="0.01" step="0.01" required>
+
+                <button type="submit" class="action-button">Submit Pledge</button>
+            </form>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
